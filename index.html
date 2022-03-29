@@ -1,34 +1,32 @@
-<html label="en">
+<!DOCTYPE html>
 
+<html>
  <head>
-   <meta charset="utf=8">
-   <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewpoint" contect="width=device-width,initial-scale=1">
+  
+  <title>Contact Info Mobile Web App</title>
+  
+  <link rel="stylesheet" href="style.css">
+  </head>
+  
+  <body onload="initialize()">
+   <script src="app.js"></script>
    
-   <title>Camera Mobile Website></title>
-   
-   <link rel="stylesheet" href="style.css">
-   
- </head>
- 
-  <body>
-
-   <main id="camera">
-     
-     <canvas id="camera-view"></canvas>
-      
-     <img alt="" id="photo-display">
-    
-     <video id ="camera-device autoplay playsinline">
-     
-     <button id ="front-camer-button">Front Camera</button>
-
-     <button id = "take-photo-button">Take Photo</button>
-
-    </main>
-    <script src="app.js"></script>
+   <table>
+    <caption>Information<div id="status">Status</div></caption>
+	
+	<thead>
+	 <tr>
+	  <th>Name</th>
+	  <th>Address</th>
+	  <th>Email</th>
+	 </tr>
+	 <thead>
+	
+	<tbody id="tcontent"></body>
+	</table>
 </body>
-</html>	
 
-
-
-
+</head>
+</html>

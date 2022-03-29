@@ -1,50 +1,63 @@
-var frontCamera=false;
-var currentStream;
-
-const
- cameraView=document.querySelector("#camera-view");
- cameraDevice=document.querySelector("#camera-device");
- photoDisplay=document.querySelector("#photo-display");
- takePhotoButton=document.querySelector("#take-photo-button");
- frontCameraButton=document.querySelector("#front-camera-button");
-
-
-frontCameraButton.onclick=function(){
-	frontCamera=!frontCamera;
-	if(frontCamera){
-		frontCameraButton.textContent="Back Camera";
-	}
-	else{frontCameraButton.textContent="Front Camera";}
-	}
-	cameraStart();
-}
-
-
-
-function cameraStart(){
-	if(typeof currentStream ! == 'undefined'){
-	currentStream.getTracks().forEach(track=>(track.stop();});
-	
-	}
-	
-	var constraints=(video:(facingMode):(frontCamera? "user":"environment")},audio:false);
-	
-	navigator.mediaDevices.getUserMedia(constraints)
-	.then(function(stream){
-		currentStream=stream;
-		cameraDevice.srcObject=stream;
+function initialize(){
+	var stauts="Offline";
+	if(navigator.Online){
+		status="Online";
+		retrieveContacts();
+		}else{
+			const localStorage = window.localStorage;
+			if(localStorage){
+				const contacts = localStorage.getItem("contacts");
+				if(contacts){
+					displayContacts(JSON.parse(contacts));
+				}
+			}
+		}
+		document.getElementById("status").innerHTML=status;
 		
-	}).catch(function(error){
-		console.error("Error happened.", error");
-	})
-	
-}
-takePhotoButton.onclick=function(){
-	cameraView.width=cameraDevice.videoWidth;
-	cameraView.height=cameraDevice.videoHeight;
-	cameraView.getContext("2d").drawImage(cameraDevice,0,0);
-	photoDisplay.src=cameraView.toDataURL("image/webp");
-	photoDisplay.classList.add("photo-taken");
+	   document.body.addEventListener("online",function(){document.getElementById("status"}.innerHTML="Online";),false);
+	    document.body.addEventListener("offline",function(){document.getElementById("status"}.innerHTML="offline";),false);
+		
 }
 
-window.addEventListener("load", cameraStart);
+function retrieveContacts(){
+	const xhr = new XMLHttpRequest();
+	const url = "contacts.json";
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			var contacts = JSON.parse(xhr.response).contacts;
+			displayContacts(contacts);
+			
+			const localStorage = window.localStorage;
+			if(localStorage){
+				localStorage.setItem("contacts",JSON.stringify(contacts));
+			}
+			
+		}
+	}
+	
+	xhr.open("get",url);
+	xhr.send();
+} 
+
+function displayContacts(contacts){
+	contacts.forEach{addRow};
+	
+}
+
+function addRow(contact){
+   var tcontent = document.getElementById("tcontent");
+   var row = tcontent.insertRom();
+   
+   var nameCell = row.insertCell();
+   nameCell.setAttribute('data-label',"Name");
+   nameCell.innerHTML=contact.name;
+   
+     var addressCell = row.insertCell();
+   addressCell.setAttribute('data-label',"Address");
+   addressCell.innerHTML=contact.address;
+	
+	  var emailCell = row.insertCell();
+   emailCell.setAttribute('data-label',"Email");
+   emailCell.innerHTML=contact.email;
+}
